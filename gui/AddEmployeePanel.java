@@ -111,6 +111,7 @@ public class AddEmployeePanel extends  JPanel {
         setLayout(new BorderLayout());
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        // to make a space from the bounders
 
         int row =0;
         addRow(form, row++, "Employee ID:", idField);
@@ -140,14 +141,13 @@ public class AddEmployeePanel extends  JPanel {
 
 
     }
-    private void addRow(
-            JPanel panel, int row,
-            String label, JComponent field) {
+    private void addRow(JPanel panel, int row, String label, JComponent field) {
 
         GridBagConstraints c = new GridBagConstraints();
 
         c.insets = new Insets(6, 6, 6, 6);
         c.gridy = row;
+        // to select which row
         c.anchor = GridBagConstraints.WEST;
 
         c.gridx = 0;
