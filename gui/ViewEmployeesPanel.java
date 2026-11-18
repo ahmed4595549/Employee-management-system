@@ -13,18 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewEmployeesPanel extends JPanel {
-    // this option to do no filter by the department
-    private static final Department ALL_DEPARTMENTS = new Department(-1, "All Departments");
 
+    // First item of the filter combo: means "no department filter"
+    private static final Department ALL_DEPARTMENTS = new Department(-1, "All Departments");
 
     private JTable employeeTable;
     private EmployeeTableModel tableModel = new EmployeeTableModel();
 
     private JTextField searchField = new JTextField(12);
     private JComboBox<String> searchByComboBox = new JComboBox<>(new String[]{"ID", "Name"});
-    // to serach by the "id" or the "name"
     private JComboBox<Department> departmentFilterComboBox = new JComboBox<>();
-    // which department we will sreach on it
 
     private JButton searchButton = new JButton("Search");
     private JButton resetButton = new JButton("Reset");
@@ -37,40 +35,42 @@ public class ViewEmployeesPanel extends JPanel {
 
     // true while we fill/reset the filter combo by code, so its listener does not fire
     private boolean updatingCombo = false;
-    public ViewEmployeesPanel(EmployeeManager employeeManager,
-                              DepartmentManager departmentManager,
+
+    public ViewEmployeesPanel(EmployeeManager employeeManager, DepartmentManager departmentManager,
                               DashboardFrame dashboard) {
         this.employeeManager = employeeManager;
         this.departmentManager = departmentManager;
-        this.dashboard = dashboard;
+        this.dashboard = dashboard; // only stored here, never used inside the constructor
+
         buildLayout();
         refreshDepartments();
         refreshTable();
+
         searchButton.addActionListener(e -> handleSearch());
-        searchField.addActionListener(e -> handleSearch());
+        searchField.addActionListener(e -> handleSearch()); // Enter key
         departmentFilterComboBox.addActionListener(e -> handleFilter());
         resetButton.addActionListener(e -> handleReset());
         editButton.addActionListener(e -> handleEdit());
         deleteButton.addActionListener(e -> handleDelete());
     }
+
+    // Show all employees
     public void refreshTable() {
         tableModel.setEmployees(employeeManager.getAllEmployees());
     }
+
+    // Fill the filter combo from the manager (called by the dashboard each time this panel is shown)
     public void refreshDepartments() {
         updatingCombo = true;
-        // to prevent update during the refresh
-
         departmentFilterComboBox.removeAllItems();
         departmentFilterComboBox.addItem(ALL_DEPARTMENTS);
-
         for (Department d : departmentManager.getAllDepartments()) {
             departmentFilterComboBox.addItem(d);
         }
-
         departmentFilterComboBox.setSelectedIndex(0);
         updatingCombo = false;
-        // to let the user update the departemnt if he want
     }
+
     private void handleSearch() {
         String text = searchField.getText().trim();
         if (text.isEmpty()) {
@@ -79,12 +79,12 @@ public class ViewEmployeesPanel extends JPanel {
             return;
         }
         setFilterToAll();
+
         if (searchByComboBox.getSelectedIndex() == 0) { // search by ID
             try {
                 int id = InputValidator.parsePositiveInt(text, "Employee ID");
                 Employee found = employeeManager.findById(id);
                 List<Employee> result = new ArrayList<>();
-                // if we serach with the name we might have many  with the same name
                 if (found != null) {
                     result.add(found);
                 }
@@ -117,16 +117,16 @@ public class ViewEmployeesPanel extends JPanel {
         setFilterToAll();
         refreshTable();
     }
+
     private void handleEdit() {
         Employee selected = getSelectedEmployee();
-
         if (selected == null) {
             showNoSelectionMessage();
             return;
         }
-
         dashboard.openUpdate(selected);
     }
+
     private void handleDelete() {
         Employee selected = getSelectedEmployee();
         if (selected == null) {
@@ -149,16 +149,8 @@ public class ViewEmployeesPanel extends JPanel {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    private Employee getSelectedEmployee() {
-        int row = employeeTable.getSelectedRow();
 
-        if (row == -1) {
-            return null;
-        }
-
-        return tableModel.getEmployeeAt(
-                employeeTable.convertRowIndexToModel(row));
-    }
+    // The real Employee object behind the selected row, or null if nothing is selected
     private Employee getSelectedEmployee() {
         int row = employeeTable.getSelectedRow();
         if (row == -1) {
@@ -212,11 +204,4 @@ public class ViewEmployeesPanel extends JPanel {
         bottom.add(deleteButton);
         add(bottom, BorderLayout.SOUTH);
     }
-}
-
-
-
-
-
-
 }
