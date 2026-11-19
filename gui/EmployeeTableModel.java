@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-// Feeds the JTable. Keeps the real Employee objects, so Edit/Delete act on the actual employee.
+
 public class EmployeeTableModel extends AbstractTableModel {
 
     private List<Employee> employees = new ArrayList<>();

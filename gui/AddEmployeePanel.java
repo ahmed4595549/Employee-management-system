@@ -21,7 +21,7 @@ public class AddEmployeePanel extends  JPanel {
     private JTextField hourlyRateField = new JTextField(15);
     private JTextField hoursWorkedField = new JTextField(15);
 
-    // Salary section: one card per employee type
+    // one card for employee type
     private JPanel salaryCards = new JPanel(new CardLayout());
 
     private JButton saveButton = new JButton("Save");

@@ -38,7 +38,7 @@ public class DepartmentPanel extends JPanel {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-            // cammot edit from the table it will be from the department manger
+            // cannot edit from the table it will be from the department manger
         };
         departmentTable = new JTable(tableModel);
         add(new JScrollPane(departmentTable), BorderLayout.CENTER);

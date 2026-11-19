@@ -31,8 +31,7 @@ public class UpdateEmployeePanel extends JPanel {
     private JButton updateButton = new JButton("Update");
     private JButton cancelButton = new JButton("Cancel");
 
-    // The employee being edited. It is never modified: we build a NEW object and the
-    // manager replaces the old one, so selectedEmployee still holds the OLD id.
+
     private Employee selectedEmployee;
 
     private EmployeeManager employeeManager;
@@ -52,7 +51,6 @@ public class UpdateEmployeePanel extends JPanel {
         cancelButton.addActionListener(e -> handleCancel());
     }
 
-    // Fill the combo from the manager, keeping the current selection if there is one
     public void refreshDepartments() {
         Department current = (Department) departmentComboBox.getSelectedItem();
         departmentComboBox.removeAllItems();
@@ -64,7 +62,6 @@ public class UpdateEmployeePanel extends JPanel {
         }
     }
 
-    // Load the selected employee's data into the editable form
     public void loadEmployee(Employee employee) {
         selectedEmployee = employee;
 
@@ -139,7 +136,6 @@ public class UpdateEmployeePanel extends JPanel {
         throw new ValidationException("Unsupported employee type.");
     }
 
-    // Select the combo item with the same department ID
     private void selectDepartment(Department department) {
         for (int i = 0; i < departmentComboBox.getItemCount(); i++) {
             if (departmentComboBox.getItemAt(i).getDepartmentId() == department.getDepartmentId()) {

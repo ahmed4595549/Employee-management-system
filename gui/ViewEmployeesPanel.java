@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ViewEmployeesPanel extends JPanel {
 
-    // First item of the filter combo: means "no department filter"
     private static final Department ALL_DEPARTMENTS = new Department(-1, "All Departments");
 
     private JTable employeeTable;
@@ -40,7 +39,7 @@ public class ViewEmployeesPanel extends JPanel {
                               DashboardFrame dashboard) {
         this.employeeManager = employeeManager;
         this.departmentManager = departmentManager;
-        this.dashboard = dashboard; // only stored here, never used inside the constructor
+        this.dashboard = dashboard;
 
         buildLayout();
         refreshDepartments();
@@ -59,7 +58,6 @@ public class ViewEmployeesPanel extends JPanel {
         tableModel.setEmployees(employeeManager.getAllEmployees());
     }
 
-    // Fill the filter combo from the manager (called by the dashboard each time this panel is shown)
     public void refreshDepartments() {
         updatingCombo = true;
         departmentFilterComboBox.removeAllItems();
@@ -138,7 +136,7 @@ public class ViewEmployeesPanel extends JPanel {
                         + " (ID " + selected.getEmployeeId() + ")?",
                 "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (choice != JOptionPane.YES_OPTION) {
-            return; // cancelled: the employee stays
+            return;
         }
         try {
             employeeManager.deleteEmployee(selected.getEmployeeId());

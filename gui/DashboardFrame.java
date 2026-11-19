@@ -68,7 +68,7 @@ public class DashboardFrame extends JFrame {
         this.dispose();
         new LoginFrame(employeeManager, departmentManager);
     }
-    // Refresh the panel's data every time it is shown
+
     public void showPanel(String name) {
         switch (name) {
             case "ADD":
