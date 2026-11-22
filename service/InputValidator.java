@@ -69,7 +69,9 @@ public final class InputValidator {
             throw new ValidationException(fieldName + " must be a valid number."
             );
         }
-        if (Double.isNaN(number) || number < 0)
+        if (Double.isNaN(number) || number < 0){
+            throw new ValidationException(fieldName + " must be a non-negative number.");
+        }
 
         return number;
     }

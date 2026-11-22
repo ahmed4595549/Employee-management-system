@@ -44,7 +44,8 @@ public class EmployeeTableModel extends AbstractTableModel {
             case 0:
                 return e.getEmployeeId();
             case 1:
-                return e.getFullName();
+                // FIX: the method in Employee is getFullname() (lowercase n), not getFullName()
+                return e.getFullname();
             case 2:
                 return e.getAge();
             case 3:

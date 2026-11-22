@@ -47,7 +47,8 @@ public class DashboardFrame extends JFrame {
         add(bar,BorderLayout.NORTH);
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);// this tow to make one panal to apper at time
-        addPanel = new AddEmployeePanel(employeeManager, departmentManager, this);
+        // FIX: AddEmployeePanel's constructor takes only (employeeManager, departmentManager) - removed the extra "this"
+        addPanel = new AddEmployeePanel(employeeManager, departmentManager);
         viewPanel = new ViewEmployeesPanel(employeeManager, departmentManager, this);
         updatePanel = new UpdateEmployeePanel(employeeManager, departmentManager, this);
         departmentPanel = new DepartmentPanel(departmentManager);

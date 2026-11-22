@@ -2,8 +2,13 @@ package gui;
 
 import model.Department;
 import model.Employee;
+// FIX: these imports were missing (FullTimeEmployee, PartTimeEmployee, InputValidator, ValidationException)
+import model.FullTimeEmployee;
+import model.PartTimeEmployee;
 import service.DepartmentManager;
 import service.EmployeeManager;
+import service.InputValidator;
+import service.ValidationException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,24 +53,29 @@ public class AddEmployeePanel extends  JPanel {
 
     public void refreshDepartments() {
         departmentComboBox.removeAllItems();
-        for(Department D:departmentManager.getALLDepartments()){
+        // FIX: method name is getAllDepartments() (was getALLDepartments)
+        for(Department D:departmentManager.getAllDepartments()){
             departmentComboBox.addItem(D);
         }
     }
-    public boolean isfulltime(){
+    // FIX: this method was named isfulltime() but it is called as isFullTime() -> renamed
+    public boolean isFullTime(){
         return typeComboBox.getSelectedIndex()==0;
     }
     public void handleTypeChange(){
         CardLayout cardLayout = (CardLayout) salaryCards.getLayout();
-        cardLayout.show (salaryCards,isfulltime()?"full-time":"part-time");
+        // FIX: the cards are registered as "FULL" / "PART" in buildLayout, but here we asked for
+        // "full-time" / "part-time", so the panel never switched
+        cardLayout.show (salaryCards,isFullTime()?"FULL":"PART");
     }
     public void handleSave() {
         try {
             Employee employee = buildEmployee();          // 1) parse + build (may throw)
             employeeManager.addEmployee(employee);        // 2) manager: unique ID, save, ...
             JOptionPane.showMessageDialog(this, "Employee added successfully!");
+            clearForm(); // FIX: clear the form after a successful save so the next employee can be entered
 
-    }    catch (ValidationException ex) {
+        }    catch (ValidationException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(),
                     "Invalid input", JOptionPane.ERROR_MESSAGE);
         }}
@@ -83,11 +93,13 @@ public class AddEmployeePanel extends  JPanel {
         if (isFullTime()) {
             double basic = InputValidator.parseNonNegativeDouble(basicSalaryField.getText(), "Basic salary");
             double bonus = InputValidator.parseNonNegativeDouble(bonusField.getText(), "Bonus");
-            return new FullTimeEmployee(id, name, age, position, department, basic, bonus);
+            return new FullTimeEmployee(id, name, position, age, department, basic, bonus);
+            // FIX: argument order is (id, name, POSITION, AGE, ...) as in the constructor (was age, position)
         } else {
             double rate = InputValidator.parseNonNegativeDouble(hourlyRateField.getText(), "Hourly rate");
             double hours = InputValidator.parseNonNegativeDouble(hoursWorkedField.getText(), "Hours worked");
-            return new PartTimeEmployee(id, name, age, position, department, rate, hours);
+            return new PartTimeEmployee(id, name, position, age, department, rate, hours);
+            // FIX: same argument-order fix
         }
     }
 
@@ -139,6 +151,18 @@ public class AddEmployeePanel extends  JPanel {
         buttons.add(saveButton);
         buttons.add(clearButton);
 
+        // FIX: the method ended here, so salaryCards, the buttons and the form were NEVER added to the panel
+        // (the screen was empty). Added them the same way UpdateEmployeePanel does.
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(6, 6, 6, 6);
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 2;
+        form.add(salaryCards, c);
+        c.gridy = row;
+        form.add(buttons, c);
+
+        add(form, BorderLayout.NORTH);
 
     }
     private void addRow(JPanel panel, int row, String label, JComponent field) {

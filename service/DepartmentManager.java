@@ -95,7 +95,7 @@ public class DepartmentManager {
     public boolean existsByName(String name) {
         List<Department> tempdepartment = getAllDepartments();
         for (Department department : tempdepartment) {
-            if (department.getDepartmentName().trim().equals(name.trim())) {
+            if (department.getDepartmentName().trim().equalsIgnoreCase(name.trim())) {
                 return true;
             }
         }
@@ -106,6 +106,7 @@ public class DepartmentManager {
         try {
             fileHandler.saveDepartments(departments);
         } catch (IOException e) {
-            throw new ValidationException("Could not save the departments file: " + e.getMessage()        }
+            throw new ValidationException("Could not save the departments file: " + e.getMessage()  );
+        }
     }
 }

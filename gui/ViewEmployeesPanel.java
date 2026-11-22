@@ -132,7 +132,8 @@ public class ViewEmployeesPanel extends JPanel {
             return;
         }
         int choice = JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to delete " + selected.getFullName()
+                // FIX: getFullname() (not getFullName())
+                "Are you sure you want to delete " + selected.getFullname()
                         + " (ID " + selected.getEmployeeId() + ")?",
                 "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (choice != JOptionPane.YES_OPTION) {

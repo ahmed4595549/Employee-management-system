@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.List;
+
 
 public class EmployeeManager {
 
@@ -87,11 +87,8 @@ public class EmployeeManager {
 
 
     public List<Employee> getAllEmployees() {
-        List<Employee> employees = new ArrayList<>();
-        for (Employee employee : employees) {
-            employees.add(employee);
-        }
-        return   employees;
+        return new ArrayList<>(employees);
+
     }
 
     public Employee findById(int employeeId) {
@@ -158,10 +155,10 @@ public class EmployeeManager {
             throw new ValidationException("Employee fullname contains invalid characters");
 
         }
-        if (e.getAge()<=18){
+        if (e.getAge()<=0){
             throw new ValidationException("Employee age is wrong");
         }
-        if (e.getDepartment()==null||!departmentManager.existsById(e.getDepartment().getDepartmentId()){
+        if (e.getDepartment()==null||!departmentManager.existsById(e.getDepartment().getDepartmentId())){
             throw new ValidationException("Department does not exist or not unique");
         }
         String type = e.getEmployeeType();

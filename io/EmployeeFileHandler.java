@@ -19,7 +19,10 @@ public class EmployeeFileHandler {
     }
 
     public void saveEmployees(List<Employee> employees) throws IOException {
-
+        File parent = new File(filePath).getParentFile();
+        if (parent != null) {
+            parent.mkdirs();
+        }
         try (BufferedWriter writer = new BufferedWriter(
                 new FileWriter(filePath))) {
             // a way to deal with the file (use the resourse then close it auto)
@@ -89,13 +92,13 @@ public class EmployeeFileHandler {
         if (parts[0].equals("FULL")) {
 
             return new FullTimeEmployee(
-                    id, name, age, position, department, first, second
+                    id, name, position, age, department, first, second
             );
 
         } else if (parts[0].equals("PART")) {
 
             return new PartTimeEmployee(
-                    id, name, age, position, department, first, second
+                    id, name, position, age, department, first, second
             );
         }
 

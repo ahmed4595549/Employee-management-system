@@ -5,11 +5,11 @@ public abstract class Employee {
     private String fullname;
     private String position;
     private  int age;
-    Department department;
-    private static  int count;
+    private   Department department;
+
 
     public Employee(int employeeId, String fullname, String position, int age, Department department) {
-        this.employeeId = ++count;
+        this.employeeId = employeeId;
         this.fullname = fullname;
         this.position = position;
         this.age = age;
@@ -22,9 +22,7 @@ public abstract class Employee {
         return age;
     }
 
-    public static int getCount() {
-        return count;
-    }
+
 
     public Department getDepartment() {
         return department;

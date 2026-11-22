@@ -13,9 +13,10 @@ public class Department {
     public String getDepartmentName() {
         return departmentName;
     }
-    public String toFileline(){
-        return departmentId+"|"+departmentName+"|";
+    public String toFileLine(){
+        return departmentId+"|"+departmentName;
     }
+
     // JComboBox<Department> to display the name
     @Override
     public String toString() {

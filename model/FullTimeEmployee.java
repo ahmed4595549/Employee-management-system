@@ -5,7 +5,7 @@ public class FullTimeEmployee extends Employee {
     private double basicSalary;
     private double bonus;
 
-    FullTimeEmployee(int employeeId, String fullname, String position, int age, Department department, double basicSalary, double bonus) {
+    public FullTimeEmployee(int employeeId, String fullname, String position, int age, Department department, double basicSalary, double bonus) {
         super(employeeId, fullname, position, age, department);
         this.basicSalary = basicSalary;
         this.bonus = bonus;
@@ -29,10 +29,11 @@ public class FullTimeEmployee extends Employee {
         return "FULL";
     }
 
+
     @Override
     public String toFileLine() {
-        return super.getFullname()+"|"+super.getEmployeeId()+"|"+super.getAge()+"|"
-                +super.getDepartment()+"|"+this.getBasicSalary()+"|"+this.getBonus() ;
+        return getEmployeeType()+"|"+getEmployeeId()+"|"+getFullname()+"|"+getAge()+"|"
+                +getDepartment().getDepartmentId()+"|"+getPosition()+"|"+basicSalary+"|"+bonus;
     }
 
 }

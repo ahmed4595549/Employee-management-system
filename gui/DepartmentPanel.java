@@ -69,5 +69,3 @@ public class DepartmentPanel extends JPanel {
     }
 
 }
-
-

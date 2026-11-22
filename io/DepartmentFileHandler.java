@@ -14,7 +14,11 @@ public class DepartmentFileHandler {
 
     public void saveDepartments(List<Department> departments)
             throws IOException {
-
+        File parent = new File(filePath).getParentFile();
+        if (parent != null) {
+            parent.mkdirs();
+        }
+        // to see if the parent folder is exist or not if not he will  creat it
         try (BufferedWriter writer = new BufferedWriter(
                 new FileWriter(filePath))) {
 
@@ -53,7 +57,7 @@ return  departments;
     }
     private Department parseDepartment(String line)
             throws IOException {
-        String[] parts = line.split("//|", -1);
+        String[] parts = line.split("\\|", -1);
         // -1 to keep  the last cell
         if (parts.length != 2) {
             throw new IllegalArgumentException("invald");
@@ -68,4 +72,4 @@ return  departments;
 
 
 
-}
+

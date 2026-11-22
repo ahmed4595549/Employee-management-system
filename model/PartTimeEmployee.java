@@ -14,6 +14,7 @@ public class PartTimeEmployee extends Employee {
     public double getHoursWorked() {
         return hoursWorked;
     }
+
     @Override
     public double calculateSalary() {
         return this.hoursWorked * this.hoursRate;
@@ -26,8 +27,9 @@ public class PartTimeEmployee extends Employee {
 
     @Override
     public String toFileLine() {
-        return  super.getFullname()+"|"+super.getEmployeeId()+"|"+super.getAge()+"|"
-                +super.getDepartment()+"|"+this.getHoursRate()+"|"+this.getHoursWorked();
+        return getEmployeeType()+"|"+getEmployeeId()+"|"+getFullname()+"|"+getAge()+"|"
+                +getDepartment().getDepartmentId()+"|"+getPosition()+"|"+hoursRate+"|"+hoursWorked;
     }
+
 
 }

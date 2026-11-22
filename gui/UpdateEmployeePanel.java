@@ -66,7 +66,8 @@ public class UpdateEmployeePanel extends JPanel {
         selectedEmployee = employee;
 
         idField.setText(String.valueOf(employee.getEmployeeId()));
-        nameField.setText(employee.getFullName());
+        // FIX: getFullname() (not getFullName())
+        nameField.setText(employee.getFullname());
         ageField.setText(String.valueOf(employee.getAge()));
         positionField.setText(employee.getPosition());
         selectDepartment(employee.getDepartment());
@@ -81,7 +82,8 @@ public class UpdateEmployeePanel extends JPanel {
         } else if (employee instanceof PartTimeEmployee) {
             PartTimeEmployee part = (PartTimeEmployee) employee;
             typeLabel.setText("Part-Time");
-            hourlyRateField.setText(String.valueOf(part.getHourlyRate()));
+            // FIX: getHourlyRate() now exists in PartTimeEmployee (was getHoursRate)
+            hourlyRateField.setText(String.valueOf(part.getHoursRate()));
             hoursWorkedField.setText(String.valueOf(part.getHoursWorked()));
             cards.show(salaryCards, "PART");
         }
@@ -127,11 +129,13 @@ public class UpdateEmployeePanel extends JPanel {
         if (selectedEmployee instanceof FullTimeEmployee) {
             double basic = InputValidator.parseNonNegativeDouble(basicSalaryField.getText(), "Basic salary");
             double bonus = InputValidator.parseNonNegativeDouble(bonusField.getText(), "Bonus");
-            return new FullTimeEmployee(id, name, age, position, department, basic, bonus);
+            // FIX: constructor order is (id, name, position, age, department, ...)
+            return new FullTimeEmployee(id, name, position, age, department, basic, bonus);
         } else if (selectedEmployee instanceof PartTimeEmployee) {
             double rate = InputValidator.parseNonNegativeDouble(hourlyRateField.getText(), "Hourly rate");
             double hours = InputValidator.parseNonNegativeDouble(hoursWorkedField.getText(), "Hours worked");
-            return new PartTimeEmployee(id, name, age, position, department, rate, hours);
+            // FIX: same argument-order fix
+            return new PartTimeEmployee(id, name, position, age, department, rate, hours);
         }
         throw new ValidationException("Unsupported employee type.");
     }
