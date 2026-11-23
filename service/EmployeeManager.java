@@ -51,24 +51,21 @@ public class EmployeeManager {
     }
 
     public void updateEmployee(int currentId, Employee updated) throws ValidationException {
-        int index= indexOf(currentId);
-        if(index == -1){
-            throw new ValidationException("Employee does not exist");
+        int index = indexOf(currentId);
+        if (index == -1) {
+            throw new ValidationException("Employee not found.");
         }
-        validateEmployee(updated,currentId);
-        // to check the name and the id repetaion
-        Employee pervoius = employees.get(index);
-        employees.set(index,updated);
+        validateEmployee(updated, currentId);
+
+        Employee old = employees.get(index);
+        employees.set(index, updated);
         try {
             save();
-
-        }
-        catch (ValidationException e) {
-            employees.set(index,pervoius);
+        } catch (ValidationException e) {
+            employees.set(index, old);
             throw e;
         }
     }
-
     public void deleteEmployee(int employeeId) {
         int index= indexOf(employeeId);
         if(index == -1){
@@ -125,11 +122,9 @@ public class EmployeeManager {
     }
 
     public boolean isIdTaken(int id, int excludedId) {
-        for (Employee employee : employees) {
-            if(employee.getEmployeeId() == id&&employee.getEmployeeId()!=excludedId){
-                //   eidt making sure that new id is unique
-                //AND excludedId IS THE PREV ID TO THE EMPLOYEE THAT WE WANT TO EDIT
-                return  true;
+        for (Employee e : employees) {
+            if (e.getEmployeeId() == id && e.getEmployeeId() != excludedId) {
+                return true;
             }
         }
         return false;
@@ -142,8 +137,8 @@ public class EmployeeManager {
         if (e.getEmployeeId()<=0){
             throw new ValidationException("Employee id is not right ");
         }
-        if (findById(e.getEmployeeId()) == null) {
-            throw new ValidationException("Employee does not exist");
+        if (isIdTaken(e.getEmployeeId(), excludedId)) {
+            throw new ValidationException("Error for a duplicated employee id");
         }
         if( e.getFullname()==null || e.getFullname().trim().isEmpty() ){
             throw new ValidationException("Employee fullname is empty");

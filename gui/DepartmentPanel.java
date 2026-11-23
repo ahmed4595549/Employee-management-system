@@ -65,6 +65,7 @@ public class DepartmentPanel extends JPanel {
             JOptionPane.showMessageDialog(this, ex.getMessage(),
                     "Invalid input", JOptionPane.ERROR_MESSAGE);
 
+            
         }
     }
 

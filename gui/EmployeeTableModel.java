@@ -16,14 +16,17 @@ public class EmployeeTableModel extends AbstractTableModel {
     public void setEmployees(List<Employee> employees) {
         this.employees = new ArrayList<>(employees);
         fireTableDataChanged();
+        // this method from AbstractTableModel to update the data in the table
     }
 
     public Employee getEmployeeAt(int row) {
+
         return employees.get(row);
     }
 
     @Override
     public int getRowCount() {
+
         return employees.size();
     }
 
@@ -44,7 +47,6 @@ public class EmployeeTableModel extends AbstractTableModel {
             case 0:
                 return e.getEmployeeId();
             case 1:
-                // FIX: the method in Employee is getFullname() (lowercase n), not getFullName()
                 return e.getFullname();
             case 2:
                 return e.getAge();
@@ -55,9 +57,8 @@ public class EmployeeTableModel extends AbstractTableModel {
             case 5:
                 return e.getEmployeeType().equals("FULL") ? "Full-Time" : "Part-Time";
             case 6:
-                // Polymorphism: each employee type calculates its own salary
-                return String.format(Locale.US, "%.2f", e.calculateSalary());
-            default:
+                return String.format("%.2f", e.calculateSalary());
+                default:
                 return "";
         }
     }

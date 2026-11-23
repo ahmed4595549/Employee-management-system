@@ -15,6 +15,7 @@ import java.util.List;
 public class ViewEmployeesPanel extends JPanel {
 
     private static final Department ALL_DEPARTMENTS = new Department(-1, "All Departments");
+    // fake Department
 
     private JTable employeeTable;
     private EmployeeTableModel tableModel = new EmployeeTableModel();
@@ -23,16 +24,21 @@ public class ViewEmployeesPanel extends JPanel {
     private JComboBox<String> searchByComboBox = new JComboBox<>(new String[]{"ID", "Name"});
     private JComboBox<Department> departmentFilterComboBox = new JComboBox<>();
 
+
+
     private JButton searchButton = new JButton("Search");
     private JButton resetButton = new JButton("Reset");
     private JButton editButton = new JButton("Edit Selected");
     private JButton deleteButton = new JButton("Delete Selected");
 
+
+
     private EmployeeManager employeeManager;
     private DepartmentManager departmentManager;
     private DashboardFrame dashboard;
+    // this panel will use the DashboardFrame to do some opration
 
-    // true while we fill/reset the filter combo by code, so its listener does not fire
+    // if it false it is normal , if true  that mean no need to filter now
     private boolean updatingCombo = false;
 
     public ViewEmployeesPanel(EmployeeManager employeeManager, DepartmentManager departmentManager,
@@ -46,7 +52,6 @@ public class ViewEmployeesPanel extends JPanel {
         refreshTable();
 
         searchButton.addActionListener(e -> handleSearch());
-        searchField.addActionListener(e -> handleSearch()); // Enter key
         departmentFilterComboBox.addActionListener(e -> handleFilter());
         resetButton.addActionListener(e -> handleReset());
         editButton.addActionListener(e -> handleEdit());
@@ -55,17 +60,22 @@ public class ViewEmployeesPanel extends JPanel {
 
     // Show all employees
     public void refreshTable() {
+
         tableModel.setEmployees(employeeManager.getAllEmployees());
     }
 
     public void refreshDepartments() {
         updatingCombo = true;
+
         departmentFilterComboBox.removeAllItems();
+
         departmentFilterComboBox.addItem(ALL_DEPARTMENTS);
+
         for (Department d : departmentManager.getAllDepartments()) {
             departmentFilterComboBox.addItem(d);
         }
         departmentFilterComboBox.setSelectedIndex(0);
+
         updatingCombo = false;
     }
 
@@ -77,12 +87,16 @@ public class ViewEmployeesPanel extends JPanel {
             return;
         }
         setFilterToAll();
+        // because we will sreach on all not with a filter
 
         if (searchByComboBox.getSelectedIndex() == 0) { // search by ID
             try {
                 int id = InputValidator.parsePositiveInt(text, "Employee ID");
+
                 Employee found = employeeManager.findById(id);
+
                 List<Employee> result = new ArrayList<>();
+
                 if (found != null) {
                     result.add(found);
                 }
@@ -132,7 +146,6 @@ public class ViewEmployeesPanel extends JPanel {
             return;
         }
         int choice = JOptionPane.showConfirmDialog(this,
-                // FIX: getFullname() (not getFullName())
                 "Are you sure you want to delete " + selected.getFullname()
                         + " (ID " + selected.getEmployeeId() + ")?",
                 "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -156,10 +169,12 @@ public class ViewEmployeesPanel extends JPanel {
             return null;
         }
         return tableModel.getEmployeeAt(employeeTable.convertRowIndexToModel(row));
+        // from the employee table fun
     }
 
     private void showResults(List<Employee> result, String emptyMessage) {
         tableModel.setEmployees(result);
+        // set make the list appear
         if (result.isEmpty()) {
             JOptionPane.showMessageDialog(this, emptyMessage,
                     "No results", JOptionPane.INFORMATION_MESSAGE);
@@ -181,7 +196,9 @@ public class ViewEmployeesPanel extends JPanel {
 
     private void buildLayout() {
         setLayout(new BorderLayout(10, 10));
+
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
 
         JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 5));
         top.add(new JLabel("Search by:"));

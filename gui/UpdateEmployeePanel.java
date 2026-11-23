@@ -97,18 +97,17 @@ public class UpdateEmployeePanel extends JPanel {
             return;
         }
         try {
-            Employee updated = buildUpdatedEmployee();
-            // The manager checks the new ID is unique (ignoring this same employee) and saves
-            employeeManager.updateEmployee(selectedEmployee.getEmployeeId(), updated);
+            int oldId = selectedEmployee.getEmployeeId();   // الـ ID القديم (من الـ object مش من الخانة)
+            Employee updated = buildUpdatedEmployee();       // الـ ID الجديد بيتقرا هنا من الخانة
+            employeeManager.updateEmployee(oldId, updated);  // نبعت القديم أولاً ثم الجديد
             JOptionPane.showMessageDialog(this, "Employee updated successfully!");
             selectedEmployee = null;
-            dashboard.showPanel("VIEW"); // the dashboard refreshes the table
+            dashboard.showPanel("VIEW");
         } catch (ValidationException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(),
                     "Invalid input", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     private void handleCancel() {
         selectedEmployee = null;
         dashboard.showPanel("VIEW");
